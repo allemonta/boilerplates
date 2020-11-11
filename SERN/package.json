@@ -1,0 +1,14 @@
+{
+  "name": "mern-boilerplate",
+  "version": "1.0.0",
+  "description": "A full stack boilerplate with MERN stack",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run stop && docker-compose up",
+    "stop": "docker-compose down -v --remove-orphans",
+    "postinstall": "npm install --prefix ./api"
+  },
+  "keywords": [],
+  "author": "Montanari Alessandro",
+  "license": "ISC"
+}

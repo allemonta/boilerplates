@@ -1,0 +1,61 @@
+version: "3.7"
+
+networks:
+  sern-local:
+
+services:
+  sern-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: sern-api
+    working_dir: /home/node/app
+    entrypoint: "npm run live"
+    ports:
+      - ${API_PORT}:${API_PORT}
+    volumes:
+      - ~/.aws:/root/.aws
+      - ./api:/home/node/app
+    environment:
+      - NODE_ENV=local
+      - API_PORT=${API_PORT}
+      - DEBUG=${DEBUG}
+      - DEBUG_HIDE_DATE=${DEBUG_HIDE_DATE}
+      - DEBUG_COLORS=${DEBUG_HIDE_DATE}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - MONGODB_URL=${MONGODB_URL}
+    networks:
+      sern-local:
+
+  sern-mysql:
+    image: mysql
+    container_name: sern-mysql
+    restart: unless-stopped
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:3306
+    networks:
+      sern-local:
+
+  sern-phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sern-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - ${PHPMYADMIN_PORT}:80
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_HOST=sern-mysql
+    networks:
+      sern-local:

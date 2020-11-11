@@ -1,0 +1,42 @@
+version: "3.7"
+
+networks:
+  mern-local:
+
+services:
+  mern-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: mern-api
+    working_dir: /home/node/app
+    entrypoint: "npm run live"
+    ports:
+      - ${API_PORT}:${API_PORT}
+    volumes:
+      - ~/.aws:/root/.aws
+      - ./api:/home/node/app
+    environment:
+      - NODE_ENV=local
+      - API_PORT=${API_PORT}
+      - DEBUG=${DEBUG}
+      - DEBUG_HIDE_DATE=${DEBUG_HIDE_DATE}
+      - DEBUG_COLORS=${DEBUG_HIDE_DATE}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - MONGODB_URL=${MONGODB_URL}
+    networks:
+      mern-local:
+
+  mern-mongodb:
+    image: mongo
+    container_name: mern-mongodb
+    restart: unless-stopped
+    volumes:
+      - ./data/mongodb:/data/db
+    ports:
+      - ${MONGODB_PORT}:27017
+    command: mongod --noauth
+    networks:
+      mern-local:
