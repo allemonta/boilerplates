@@ -1,4 +1,4 @@
-# Boilerplates
+# SERN full stack application
 
 ## Requirements
 
@@ -20,18 +20,14 @@
     - MacOS: already installed with docker
     - Linux: launch commands `sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose`
 
-## MERN
+## Setup
+Run the following commands:
+1. `cp sample.env .env`
+2. `npm install`
 
-Stack:
-- MongoDB
-- Express
-- ReactJS
-- NodeJS
+## Start
+Run the following command: `npm start`
 
-## SERN
-
-Stack:
-- MySQL
-- Express
-- ReactJS
-- NodeJS
+Frontend: `http://127.0.0.1`
+Backend: `http://127.0.0.1:3000`
+PHPMyAdmin: `http://127.0.0.1:32000`

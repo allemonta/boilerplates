@@ -41,6 +41,21 @@ services:
     networks:
       mern-local:
 
+  mern-mongoclient:
+    image: mongoclient/mongoclient
+    container_name: mern-mongoclient
+    restart: unless-stopped
+    ports:
+      - ${MONGOCLIENT_PORT}:3000
+    volumes: 
+      - ./data/mongoclient:/data/db
+    environment: 
+      - MONGO_URL=mongodb://mern-mongodb:27017
+    networks:
+      mern-local:
+    depends_on: 
+      - mern-mongodb
+
   mern-nginx:
     image: nginx:1.15-alpine
     container_name: mern-nginx
@@ -54,3 +69,4 @@ services:
       - 80:80
       - 443:443
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
