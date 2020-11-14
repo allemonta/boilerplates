@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run stop && docker-compose up",
+    "start:dev": "",
+    "start:prod": "",
     "stop": "docker-compose down -v --remove-orphans",
-    "postinstall": "npm install --prefix ./api"
+    "postinstall": "npm install --prefix ./api && npm install --prefix ./client"
   },
   "keywords": [],
   "author": "Montanari Alessandro",
